@@ -49,18 +49,34 @@ class ResultScreen extends StatelessWidget {
                 itemCount: incorrectWords.length,
                 itemBuilder: (context, index) {
                     return ListTile(
-                        title: Padding(
-                          padding: const EdgeInsets.only(left: 20.0),  // 左側に余白
-                          child: Text(
-                            '${incorrectWords[index]['index']}:'
-                            '${incorrectWords[index]['word']}',
-                            style: TextStyle(fontSize: 20),
+                        title: Row(
+                          children: <Widget>[
+                            Container(  //単語番号を表示するContainerを追加
+                              width: 55,
+                              height: 55,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1F8423),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                '${incorrectWords[index]['index']}',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            SizedBox(width: 16),  //Containerと単語の間にスペースを追加
+                            Expanded(
+                              child: Text(
+                                '${incorrectWords[index]['word']}',
+                                style: TextStyle(fontSize: 20),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
             ElevatedButton(
               onPressed: () {
                 // トップ画面に戻る

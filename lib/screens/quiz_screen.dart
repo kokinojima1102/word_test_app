@@ -14,7 +14,7 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  List<String> words = [];
+  List<Map<String, dynamic>> words = [];
   int currentIndex = 0;
   int score = 0;
   Timer? timer;
@@ -54,7 +54,12 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   void nextQuestion(bool isKnown) {
-    if (!isKnown) incorrectWords.add({'word': words[currentIndex], 'index': currentIndex + 1}); // 不正解の単語をリストに追加
+    if (!isKnown) {
+        incorrectWords.add({
+            'word': words[currentIndex]['word'],
+            'index': words[currentIndex]['index']
+        });
+    }
     if (isKnown) score++;
     if (currentIndex < words.length - 1) {
       currentIndex++;
@@ -96,7 +101,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    words[currentIndex],
+                    words[currentIndex]['word'],
                     style: TextStyle(fontSize: 32),
                   ),
                   SizedBox(height: 30),
