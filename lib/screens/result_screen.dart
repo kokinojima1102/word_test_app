@@ -48,7 +48,7 @@ class ResultScreen extends StatelessWidget {
               child: ListView.builder(
                 itemCount: incorrectWords.length,
                 itemBuilder: (context, index) {
-                    return ListTile(
+                    return ListTile(contentPadding: EdgeInsets.only(left: 30.0),
                         title: Row(
                           children: <Widget>[
                             Container(  //単語番号を表示するContainerを追加

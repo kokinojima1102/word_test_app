@@ -10,7 +10,7 @@ class _RangeSelectionScreenState extends State<RangeSelectionScreen> {
   // 開始値と終了値を管理するためのTextEditingControllerを作成
   final _startController = TextEditingController();
   final _endController = TextEditingController();
-
+  final _numQuestionsController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +51,24 @@ class _RangeSelectionScreenState extends State<RangeSelectionScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 16),  // TextFieldとButton間のスペースを作るためのSizedBox
+            SizedBox(height: 16),  //インデント調整
+
+            //問題数を選択するTextField
+            Center(
+              child: Container(
+                width: 150,
+                child: TextField(
+                  controller: _numQuestionsController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'number',
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),  // インデント調整
+
             // クイズを開始するボタンを作成
             // ボタンが押されたときには、入力された範囲の値を取得し、
             // それらが有効な範囲であることを確認した上でQuizScreenに遷移
@@ -82,6 +99,7 @@ class _RangeSelectionScreenState extends State<RangeSelectionScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => QuizScreen(
+                      numQuestions: int.tryParse(_numQuestionsController.text) ?? 0,
                       startWordIndex: startRange -1,
                       endWordIndex: endRange ,
                     ),

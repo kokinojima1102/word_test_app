@@ -6,8 +6,9 @@ import 'package:word_test_app/screens/result_screen.dart';
 class QuizScreen extends StatefulWidget {
   final int startWordIndex;
   final int endWordIndex;
+  final int numQuestions;
 
-  QuizScreen({required this.startWordIndex, required this.endWordIndex});
+  QuizScreen({required this.startWordIndex, required this.endWordIndex, required this.numQuestions}); 
 
   @override
   _QuizScreenState createState() => _QuizScreenState();
@@ -24,6 +25,10 @@ class _QuizScreenState extends State<QuizScreen> {
   // Futureを返すinitDataメソッドを作成
   Future<void> initData() async {
     words = await loadCsvData(start: widget.startWordIndex, end: widget.endWordIndex);
+    if (widget.numQuestions > 0 && widget.numQuestions < words.length) {
+      words.shuffle();
+      words = words.take(widget.numQuestions).toList();
+    }
     resetTimer();
   }
 
