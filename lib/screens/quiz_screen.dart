@@ -24,7 +24,10 @@ class _QuizScreenState extends State<QuizScreen> {
  // 不正解の単語のリストを保存する変数
   // Futureを返すinitDataメソッドを作成
   Future<void> initData() async {
-    words = await loadCsvData(start: widget.startWordIndex, end: widget.endWordIndex);
+    var loadedWords = await loadCsvData(start: widget.startWordIndex, end: widget.endWordIndex);
+    setState(() {
+      words = loadedWords;
+    });
     if (widget.numQuestions > 0 && widget.numQuestions < words.length) {
       words.shuffle();
       words = words.take(widget.numQuestions).toList();
@@ -62,7 +65,8 @@ class _QuizScreenState extends State<QuizScreen> {
     if (!isKnown) {
         incorrectWords.add({
             'word': words[currentIndex]['word'],
-            'index': words[currentIndex]['index']
+            'index': words[currentIndex]['index'],
+            'translation': words[currentIndex]['translation']
         });
     }
     if (isKnown) score++;

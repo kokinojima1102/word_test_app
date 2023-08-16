@@ -8,7 +8,11 @@ Future<List<Map<String, dynamic>>> loadCsvData({int start = 0, int end = 1900}) 
   final List<Map<String, dynamic>> wordsWithIndex = [];
     for (int i = start; i < end; i++) {
         if (rows[i].isNotEmpty) {
-            wordsWithIndex.add({'word': rows[i][0].toString(), 'index': i + 1});
+            wordsWithIndex.add({
+                'word': rows[i][0].toString(),       //間違えた単語
+                'index': i + 1,                      //単語番号
+                'translation': rows[i][1].toString() //翻訳
+                });
         }
     }
     return wordsWithIndex;

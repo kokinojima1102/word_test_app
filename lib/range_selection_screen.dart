@@ -80,6 +80,13 @@ class _RangeSelectionScreenState extends State<RangeSelectionScreen> {
                 int? endRange = int.tryParse(_endController.text);
                 // 入力が数値でない場合、または開始範囲が終了範囲以上の場合は、
                 // エラーメッセージを表示
+                if (startRange == null || startRange < 1 || startRange > 1900 || endRange == null || endRange < 1 || endRange > 1900) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('1から1900の範囲で数値を入力してください')),
+                  );
+                  return;
+                }
+
                 if (startRange == null || startRange == 0 || endRange == null || endRange == 0) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('正しい数値を入力してください')),
@@ -94,6 +101,14 @@ class _RangeSelectionScreenState extends State<RangeSelectionScreen> {
                   return;
                 }
 
+                int? numQuestions = int.tryParse(_numQuestionsController.text);
+                if (numQuestions != null && (endRange - startRange + 1) < numQuestions) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('選択範囲が出題数に満たないです')),
+                    );
+                    return;
+                }
+                
                 // 範囲が有効であればQuizScreenに遷移
                 Navigator.push(
                   context,
