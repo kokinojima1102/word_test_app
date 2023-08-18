@@ -4,11 +4,17 @@ import 'package:word_test_app/screens/utils.dart';
 import 'package:word_test_app/screens/result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
+  final DateTime startTime;
   final int startWordIndex;
   final int endWordIndex;
   final int numQuestions;
 
-  QuizScreen({required this.startWordIndex, required this.endWordIndex, required this.numQuestions}); 
+  QuizScreen({
+              required this.startWordIndex, 
+              required this.endWordIndex,
+              required this.numQuestions,
+              required this.startTime
+              }); 
 
   @override
   _QuizScreenState createState() => _QuizScreenState();
@@ -19,9 +25,11 @@ class _QuizScreenState extends State<QuizScreen> {
   int currentIndex = 0;
   int score = 0;
   Timer? timer;
+  DateTime? startTime;
+  DateTime? endTime;
   double progressValue = 0.0;
   List<Map<String, dynamic>> incorrectWords = [];
- // 不正解の単語のリストを保存する変数
+  // 不正解の単語のリストを保存する変数
   // Futureを返すinitDataメソッドを作成
   Future<void> initData() async {
     var loadedWords = await loadCsvData(start: widget.startWordIndex, end: widget.endWordIndex);
@@ -39,6 +47,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
+    startTime = widget.startTime;
     initData();
   }
 
@@ -75,12 +84,16 @@ class _QuizScreenState extends State<QuizScreen> {
       progressValue = 0.0;
       resetTimer();
     } else {
-      Navigator.of(context).pushReplacement(
+        endTime = DateTime.now();
+        Duration elapsedTime = endTime!.difference(startTime!);
+        Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => ResultScreen(
             score: score,
             totalQuestions: words.length,
             incorrectWords: incorrectWords,  //incorrectWordsも渡す
+            allWords: words, //出題した全ての単語も渡す
+            elapsedTime: elapsedTime, 
           ),
         ),
       );

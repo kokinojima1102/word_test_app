@@ -75,11 +75,11 @@ class _RangeSelectionScreenState extends State<RangeSelectionScreen> {
             ElevatedButton(
               child: Text('テストを開始'),
               onPressed: () {
+                DateTime startTime = DateTime.now();
                 // 入力されたテキストを数値に変換
                 int? startRange = int.tryParse(_startController.text);
                 int? endRange = int.tryParse(_endController.text);
-                // 入力が数値でない場合、または開始範囲が終了範囲以上の場合は、
-                // エラーメッセージを表示
+                // 入力が数値でない場合、エラーメッセージを表示
                 if (startRange == null || startRange < 1 || startRange > 1900 || endRange == null || endRange < 1 || endRange > 1900) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('1から1900の範囲で数値を入力してください')),
@@ -114,6 +114,7 @@ class _RangeSelectionScreenState extends State<RangeSelectionScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => QuizScreen(
+                      startTime: startTime,
                       numQuestions: int.tryParse(_numQuestionsController.text) ?? 0,
                       startWordIndex: startRange -1,
                       endWordIndex: endRange ,
